@@ -1,0 +1,36 @@
+def compress(s):
+    comp_s=''
+    n=len(s)
+    if n<3:
+        return s
+    else:
+        for size in range((n+1)//2,0,-1):
+            cur_index = 0
+            while cur_index + 2*size<n+1:
+                cnt=1
+                subs1=s[cur_index: cur_index+size]
+                subs2=s[cur_index+size: cur_index +2*size]
+                while subs1==subs2 and cur_index + (cnt+1)*size<n+1:
+                    cnt +=1
+                    subs2=s[cur_index + cnt*size: cur_index + (cnt+1)*size]
+                if cnt>1 and size>1:
+                    comp_s=compress(s[:cur_index])+subs1.upper()+str(cnt)+compress(s[cur_index + cnt*size:])
+                    break
+                elif cnt>2:
+                    comp_s=compress(s[:cur_index])+subs1+str(cnt)+compress(s[cur_index + cnt*size:])
+                    break
+                cur_index +=1
+        if comp_s=='':
+            comp_s=s
+        return comp_s
+while True:
+    try:
+        s=input()
+        n=len(s)
+        if n==0:
+            print(' ')
+        else:
+            cs=compress(s)
+            print(cs)
+    except:
+        break
